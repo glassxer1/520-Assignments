@@ -1,0 +1,21 @@
+# Getting started
+echo Hello world
+date
+
+# File paths and directory navigation
+echo $HOME
+cd $HOME
+ls
+mkdir temp
+mv ./temp ./files
+cd ./files
+touch temp
+mv temp test
+cd ..
+rm -rf files
+
+# Permissions
+echo "It's a secret!" >> secretfile
+chmod -w ./secretfile && ls -l secretfile
+chmod +w && cat hi >> secretfile
+
