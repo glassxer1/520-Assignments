@@ -1,5 +1,5 @@
 #Compilers
-CC          := g++ -std=c++17
+CC          := g++ -std=c++11
 DGEN        := doxygen
 
 #The Target Binary Program
@@ -13,19 +13,19 @@ TARGETDIR   := ./bin
 SRCEXT      := c
 
 #Flags, Libraries and Includes
-CFLAGS      := -g
-LIB         := -lgtest -lpthread
+CFLAGS      := # -fsanitize=address -ggdb
+LIB         := -lgtest -lpthread # -lasan
 INC         := -I$(INCDIR)
 INCDEP      := -I$(INCDIR)
 
 #Files
 DGENCONFIG  := docs.config
-HEADERS     := complex.h
-SOURCES     := complex.c unit_test.c main.c
+HEADERS     := $(wildcard *.h)
+SOURCES     := $(wildcard *.c)
 OBJECTS     := $(patsubst %.c, $(BUILDDIR)/%.o, $(notdir $(SOURCES)))
 
 #Defauilt Make
-all: directories $(TARGETDIR)/$(TARGET)
+all: directories $(TARGETDIR)/$(TARGET) 
 
 #Remake
 remake: cleaner all
@@ -53,7 +53,7 @@ spotless: clean
 
 #Link
 $(TARGETDIR)/$(TARGET): $(OBJECTS) $(HEADERS)
-	$(CC) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
+	$(CC) $(CFLAGS) -o $(TARGETDIR)/$(TARGET) $^ $(LIB)
 
 #Compile
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) $(HEADERS)
